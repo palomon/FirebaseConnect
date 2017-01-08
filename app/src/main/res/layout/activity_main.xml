@@ -24,19 +24,19 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/editText"
             android:gravity="left|center_vertical"
-            android:hint="Email" />
+            android:hint="Email"
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"
             android:ems="10"
             android:id="@+id/editText2"
-            android:hint="Password" />
+            android:hint="Password"
+            android:inputType="textPassword" />
 
         <Button
             android:text="Register"

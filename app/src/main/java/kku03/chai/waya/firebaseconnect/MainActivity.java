@@ -49,7 +49,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, "Please enter password", Toast.LENGTH_SHORT).show();
             return;
         }
-        progressDialog.setMessage("Register User...");
+        if(password.length() < 6){
+            Toast.makeText(this, "Passwords must be at least 6 characters", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        progressDialog.setMessage("Register User..." + email + " : " + password);
         progressDialog.show();
 
         firebaseAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -57,9 +61,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
                     Toast.makeText(MainActivity.this, "Register Complete", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                 }
                 else{
                     Toast.makeText(MainActivity.this, "Try Again", Toast.LENGTH_SHORT).show();
+                    progressDialog.dismiss();
                 }
             }
         });
@@ -70,6 +76,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         if(v == buttonReg){
             registerUser();
+        }
+        else{
+
         }
 
     }
