@@ -34,6 +34,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if(firebaseAuth.getCurrentUser() != null){
             //After login activity
+            finish();
+            startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
         }
 
         progressDialog = new ProgressDialog(this);
@@ -72,6 +74,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 progressDialog.dismiss();
                 if(task.isSuccessful()){
                     Toast.makeText(LoginActivity.this, "Login Complete", Toast.LENGTH_SHORT).show();
+                    finish();
+                    startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
                 }
                 else{
                     Toast.makeText(LoginActivity.this, "Try Again", Toast.LENGTH_SHORT).show();
