@@ -56,6 +56,13 @@
             android:layout_height="wrap_content">
 
             <Button
+                android:text="LOAD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/buttonLoad"
+                android:layout_weight="1" />
+
+            <Button
                 android:text="SAVE"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -11,14 +11,17 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ProfileActivity extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth firebaseAuth;
     private TextView textView;
-    private Button saveButton,logoutButton;
+    private Button saveButton,logoutButton,loadButton;
 
     private DatabaseReference databaseReference;
     private EditText nameEditText,phoneEditText;
@@ -45,12 +48,13 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         textView = (TextView)findViewById(R.id.textView2);
         saveButton = (Button)findViewById(R.id.buttonSave);
         logoutButton = (Button)findViewById(R.id.buttonLogout);
+        loadButton = (Button)findViewById(R.id.buttonLoad);
 
         textView.setText(user.getEmail());
 
         saveButton.setOnClickListener(this);
         logoutButton.setOnClickListener(this);
-
+        loadButton.setOnClickListener(this);
     }
 
     private void saveUserInfo(){
@@ -60,10 +64,29 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
         UserInfo userInfo = new UserInfo(name,phone);
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
-        databaseReference.child(user.getUid()).setValue(userInfo);
+        databaseReference.child("users").child(user.getUid()).setValue(userInfo);
 
         Toast.makeText(this,"Saved..",Toast.LENGTH_SHORT).show();
 
+    }
+
+    private void loadUserInfo(){
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        databaseReference.child("users").child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                UserInfo post = dataSnapshot.getValue(UserInfo.class);
+                nameEditText.setText(post.name);
+                phoneEditText.setText(post.phone);
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -75,6 +98,9 @@ public class ProfileActivity extends AppCompatActivity implements View.OnClickLi
             firebaseAuth.signOut();
             finish();
             startActivity(new Intent(this , LoginActivity.class));
+        }
+        if(v == loadButton){
+            loadUserInfo();
         }
     }
 }
